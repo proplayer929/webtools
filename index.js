@@ -1167,7 +1167,7 @@
         try {
             const url = window.location.href;
             for (let i = 0; i < count; i++) {
-                history.pushState({}, '', url);
+                history.pushState(0, 0, i == count ? window.location.href : i.toString());
             }
             status.textContent = `Added ${count} entries to history`;
         } catch (e) {
