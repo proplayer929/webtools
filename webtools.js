@@ -192,6 +192,21 @@
             `
         },
         {
+            id: 'tab-disguise',
+            name: 'Tab Disguise',
+            description: 'Make the page look like Google Drive.',
+            content: `
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3 class="tool-title">Tab Disguise</h3>
+                        <button id="pin-tab-disguise" class="pin-button" data-tooltip="Pin to sidebar"></button>
+                    </div>
+                    <p class="tool-description">Make the page look like Google Drive.</p>
+                    <button onclick="window.disguiseTab()" class="action-button" data-tooltip="Disguise tab">Disguise tab</button>
+                </div>
+            `
+        },
+        {
             id: 'tab-opener',
             name: 'Tab Opener',
             description: 'Open multiple tabs of a URL.',
@@ -889,7 +904,7 @@
                 feet: 3.28084,
                 inches: 39.3701
             };
-            result = (value * conversions[from]) / conversions[to];
+            result = (value * conversions[from]) * conversions[to];
         } else if (type === 'weight') {
             const conversions = {
                 kilograms: 1,
@@ -897,7 +912,7 @@
                 pounds: 2.20462,
                 ounces: 35.274
             };
-            result = (value * conversions[from]) / conversions[to];
+            result = (value * conversions[from]) * conversions[to];
         } else if (type === 'temperature') {
             let celsius;
             if (from === 'Celsius') celsius = value;
@@ -1172,6 +1187,26 @@
             status.textContent = `Added ${count} entries to history`;
         } catch (e) {
             status.textContent = 'Failed to flood history';
+        }
+    };
+
+    // Tab disguiser
+    window.disguiseTab = () => {
+        try {
+            // Change title
+            document.title = 'Google Drive';
+
+            // Change favicon
+            const links = document.querySelectorAll("link[rel~='icon']");
+            links.forEach(link => link.remove());
+
+            // Create new favicon link
+            const newFavicon = document.createElement('link');
+            newFavicon.rel = 'icon';
+            newFavicon.href = 'https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png'
+            document.head.appendChild(newFavicon);
+        } catch (e) {
+            status.textContent = 'Failed to disguise tab';
         }
     };
     
