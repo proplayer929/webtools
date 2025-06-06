@@ -227,6 +227,23 @@
             `
         },
         {
+            id: 'stealth-opener',
+            name: 'Stealth Opener',
+            description: 'Open a URL without adding it to your history.',
+            content: `
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <h3 class="tool-title">Stealth Opener</h3>
+                        <button id="pin-stealth-opener" class="pin-button" data-tooltip="Pin to sidebar"></button>
+                    </div>
+                    <p class="tool-description">Open a URL without adding it to your history.</p>
+                    <input id="stealth-url" type="text" placeholder="URL (leave blank for current page)" class="tool-input">
+                    <button onclick="window.stealthOpen()" class="action-button" data-tooltip="Stealth open">Stealth Open</button>
+                    <p id="tab-status" class="tool-description"></p>
+                </div>
+            `
+        },
+        {
             id: 'cookie-cleaner',
             name: 'Cookie Cleaner',
             description: 'Clear all cookies for the current domain.',
@@ -1207,6 +1224,49 @@
             document.head.appendChild(newFavicon);
         } catch (e) {
             status.textContent = 'Failed to disguise tab';
+        }
+    };
+
+    // Stealth opener
+    window.stealthOpen = () => {
+        const stealthURL = document.getElementById('stealth-url');
+        if (!stealthURL) return;
+        
+        const url = stealthURL.value;
+        
+        try {
+            const html = `
+            <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stealth Opener</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+    iframe {
+      border: none;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <iframe src="${url}"></iframe>
+</body>
+</html>
+            `;
+            const newWindow = window.open('about:blank', '_blank');
+            newWindow.document.write(html);
+            newWindow.document.close();
+        } catch (e) {
+            status.textContent = 'Failed to stealth open';
         }
     };
     
