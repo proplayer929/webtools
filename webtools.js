@@ -264,7 +264,7 @@
     const windowEl = document.createElement('div');
     windowEl.id = 'webtools-window';
     windowEl.style.cssText = `
-        position: absolute;
+        position: fixed;
         top: 100px;
         left: 100px;
         width: 600px;
